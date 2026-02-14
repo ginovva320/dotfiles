@@ -10,7 +10,10 @@ if ! command -v apt-get >/dev/null 2>&1; then
   exit 0
 fi
 
-mapfile -t packages < <(grep -hvE '^[[:space:]]*(#|$)' "$COMMON_PACKAGES" "$DEBIAN_PACKAGES" | sed 's/^fd-find$/fd-find/' | sort -u)
+packages=()
+while IFS= read -r pkg; do
+  packages+=("$pkg")
+done < <(grep -hvE '^[[:space:]]*(#|$)' "$COMMON_PACKAGES" "$DEBIAN_PACKAGES" | sed 's/^fd-find$/fd-find/' | sort -u)
 
 if [[ ${#packages[@]} -eq 0 ]]; then
   echo "No packages to install for Debian/Ubuntu"

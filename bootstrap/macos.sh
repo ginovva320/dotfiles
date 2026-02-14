@@ -9,7 +9,10 @@ if ! command -v brew >/dev/null 2>&1; then
   exit 1
 fi
 
-mapfile -t packages < <(grep -vE '^[[:space:]]*(#|$)' "$MACOS_PACKAGES")
+packages=()
+while IFS= read -r pkg; do
+  packages+=("$pkg")
+done < <(grep -vE '^[[:space:]]*(#|$)' "$MACOS_PACKAGES")
 
 if [[ ${#packages[@]} -eq 0 ]]; then
   echo "No packages to install for macOS"
