@@ -76,15 +76,7 @@ ensure_mise() {
   fi
 
   case "$os" in
-    macos)
-      if command -v brew >/dev/null 2>&1; then
-        brew install mise
-      else
-        echo "Homebrew not found; installing mise with official installer"
-        curl https://mise.run | sh
-      fi
-      ;;
-    debian|arch|linux)
+    macos|debian|arch|linux)
       curl https://mise.run | sh
       ;;
     *)
