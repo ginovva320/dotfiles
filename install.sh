@@ -123,6 +123,38 @@ ensure_antidote() {
   git clone --depth=1 https://github.com/mattmc3/antidote.git "$antidote_dir"
 }
 
+ensure_default_shell_zsh() {
+  local zsh_bin
+  zsh_bin="$(command -v zsh || true)"
+
+  if [[ -z "$zsh_bin" ]]; then
+    echo "zsh not found; skipping default shell setup"
+    return
+  fi
+
+  if [[ "${SHELL:-}" == "$zsh_bin" ]]; then
+    echo "default shell already set to zsh: $zsh_bin"
+    return
+  fi
+
+  if ! grep -qx "$zsh_bin" /etc/shells 2>/dev/null; then
+    echo "zsh path not listed in /etc/shells: $zsh_bin"
+    echo "Run manually: sudo sh -c 'echo $zsh_bin >> /etc/shells' && chsh -s $zsh_bin"
+    return
+  fi
+
+  if command -v chsh >/dev/null 2>&1; then
+    if chsh -s "$zsh_bin" "$USER"; then
+      echo "default shell updated to zsh: $zsh_bin"
+    else
+      echo "could not change shell automatically"
+      echo "Run manually: chsh -s $zsh_bin"
+    fi
+  else
+    echo "chsh not found; set shell manually to: $zsh_bin"
+  fi
+}
+
 link_file() {
   local src="$1"
   local dst="$2"
@@ -178,6 +210,7 @@ if [[ "$RUN_BOOTSTRAP" == true ]]; then
 fi
 
 ensure_antidote
+ensure_default_shell_zsh
 
 if [[ "$BOOTSTRAP_ONLY" == true ]]; then
   echo "bootstrap-only mode complete"

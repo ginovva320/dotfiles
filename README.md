@@ -32,6 +32,7 @@ exec zsh
 
 `install.sh` auto-detects OS and runs package bootstrap before linking files.
 It also ensures `mise` is installed and runs `mise install` using your tracked config.
+It attempts to set your login shell to `zsh` when available.
 
 Git includes useful defaults and aliases, including:
 
