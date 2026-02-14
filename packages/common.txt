@@ -1,0 +1,11 @@
+git
+zsh
+vim
+fzf
+ripgrep
+fd-find
+bat
+curl
+wget
+unzip
+build-essential

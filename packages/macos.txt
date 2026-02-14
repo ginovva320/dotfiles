@@ -1,0 +1,10 @@
+# Homebrew formulae
+git
+zsh
+vim
+fzf
+ripgrep
+fd
+bat
+curl
+wget

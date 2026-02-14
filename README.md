@@ -24,6 +24,30 @@ Then restart your shell:
 exec zsh
 ```
 
+## Bootstrap behavior
+
+`install.sh` auto-detects OS and runs package bootstrap before linking files.
+
+Supported bootstrap scripts:
+
+- `bootstrap/macos.sh` (Homebrew)
+- `bootstrap/debian.sh` (`apt`)
+- `bootstrap/arch.sh` (`pacman`)
+
+Package lists are in:
+
+- `packages/macos.txt`
+- `packages/common.txt`
+- `packages/debian.txt`
+- `packages/arch.txt`
+
+Useful flags:
+
+```bash
+./install.sh --no-bootstrap
+./install.sh --bootstrap-only
+```
+
 ## Notes
 
 - Existing target files are backed up to `~/.dotfiles_backup/<timestamp>/`.
