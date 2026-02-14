@@ -106,6 +106,23 @@ install_mise_tools() {
   MISE_CONFIG_FILE="$config_file" mise install
 }
 
+ensure_antidote() {
+  local antidote_dir="$HOME/.antidote"
+
+  if [[ -f "$antidote_dir/antidote.zsh" ]]; then
+    echo "antidote already installed"
+    return
+  fi
+
+  if ! command -v git >/dev/null 2>&1; then
+    echo "git not found; cannot install antidote automatically"
+    return
+  fi
+
+  echo "Installing antidote to $antidote_dir"
+  git clone --depth=1 https://github.com/mattmc3/antidote.git "$antidote_dir"
+}
+
 link_file() {
   local src="$1"
   local dst="$2"
@@ -159,6 +176,8 @@ if [[ "$RUN_BOOTSTRAP" == true ]]; then
   ensure_mise "$os"
   install_mise_tools
 fi
+
+ensure_antidote
 
 if [[ "$BOOTSTRAP_ONLY" == true ]]; then
   echo "bootstrap-only mode complete"

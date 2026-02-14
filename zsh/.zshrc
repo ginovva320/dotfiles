@@ -5,11 +5,13 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# source antidote
-source ~/.antidote/antidote.zsh
-
-# initialize plugins statically with ${ZDOTDIR:-~}/.zsh_plugins.txt
-antidote load
+# source antidote if installed
+if [[ -f "$HOME/.antidote/antidote.zsh" ]]; then
+  source "$HOME/.antidote/antidote.zsh"
+  antidote load
+else
+  echo "antidote not found at ~/.antidote/antidote.zsh (plugins disabled)"
+fi
 
 if [[ -x "$HOME/.local/bin/mise" ]]; then
   eval "$(~/.local/bin/mise activate zsh)"
