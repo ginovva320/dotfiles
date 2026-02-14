@@ -16,6 +16,13 @@ fi
 if [[ -x "$HOME/.local/bin/mise" ]]; then
   eval "$(~/.local/bin/mise activate zsh)"
 fi
+
+export PNPM_HOME="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
 source ~/.config/zsh/zshrc_aliases
 if command -v fzf >/dev/null 2>&1; then
   source <(fzf --zsh)
