@@ -8,6 +8,7 @@ Personal shell/editor/git configuration managed in a small symlink-based repo.
 - `zsh/.p10k.zsh`
 - `zsh/.zsh_plugins.txt`
 - `zsh/.config/zsh/zshrc_aliases`
+- `mise/.config/mise/config.toml`
 - `git/.gitconfig`
 
 ## Install on a new machine
@@ -27,6 +28,7 @@ exec zsh
 ## Bootstrap behavior
 
 `install.sh` auto-detects OS and runs package bootstrap before linking files.
+It also ensures `mise` is installed and runs `mise install` using your tracked config.
 
 Supported bootstrap scripts:
 

@@ -67,6 +67,53 @@ run_bootstrap() {
   fi
 }
 
+ensure_mise() {
+  local os="$1"
+
+  if command -v mise >/dev/null 2>&1; then
+    echo "mise already installed"
+    return
+  fi
+
+  case "$os" in
+    macos)
+      if command -v brew >/dev/null 2>&1; then
+        brew install mise
+      else
+        echo "Homebrew not found; installing mise with official installer"
+        curl https://mise.run | sh
+      fi
+      ;;
+    debian|arch|linux)
+      curl https://mise.run | sh
+      ;;
+    *)
+      echo "Unsupported OS for automatic mise install: $os"
+      return
+      ;;
+  esac
+
+  export PATH="$HOME/.local/bin:$PATH"
+  hash -r
+
+  if ! command -v mise >/dev/null 2>&1; then
+    echo "mise install appears to have failed"
+    exit 1
+  fi
+}
+
+install_mise_tools() {
+  local config_file="$DOTFILES_DIR/mise/.config/mise/config.toml"
+
+  if [[ ! -f "$config_file" ]]; then
+    echo "No mise config found at $config_file; skipping tool installs"
+    return
+  fi
+
+  echo "Installing tools via mise from $config_file"
+  MISE_CONFIG_FILE="$config_file" mise install
+}
+
 link_file() {
   local src="$1"
   local dst="$2"
@@ -117,6 +164,8 @@ echo "Detected OS: $os"
 
 if [[ "$RUN_BOOTSTRAP" == true ]]; then
   run_bootstrap "$os"
+  ensure_mise "$os"
+  install_mise_tools
 fi
 
 if [[ "$BOOTSTRAP_ONLY" == true ]]; then
@@ -128,6 +177,7 @@ link_file "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
 link_file "$DOTFILES_DIR/zsh/.p10k.zsh" "$HOME/.p10k.zsh"
 link_file "$DOTFILES_DIR/zsh/.zsh_plugins.txt" "$HOME/.zsh_plugins.txt"
 link_file "$DOTFILES_DIR/zsh/.config/zsh/zshrc_aliases" "$HOME/.config/zsh/zshrc_aliases"
+link_file "$DOTFILES_DIR/mise/.config/mise/config.toml" "$HOME/.config/mise/config.toml"
 link_file "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
 
 echo "done"

@@ -1,7 +1,6 @@
 git
 zsh
 vim
-fzf
 ripgrep
 fd-find
 bat
