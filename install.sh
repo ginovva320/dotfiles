@@ -179,5 +179,7 @@ link_file "$DOTFILES_DIR/zsh/.zsh_plugins.txt" "$HOME/.zsh_plugins.txt"
 link_file "$DOTFILES_DIR/zsh/.config/zsh/zshrc_aliases" "$HOME/.config/zsh/zshrc_aliases"
 link_file "$DOTFILES_DIR/mise/.config/mise/config.toml" "$HOME/.config/mise/config.toml"
 link_file "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
+link_file "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
+link_file "$DOTFILES_DIR/vim/.vimrc" "$HOME/.vimrc"
 
 echo "done"

@@ -1,3 +1,11 @@
 [user]
 	name = Anid Monsur
 	email = ginovva320@gmail.com
+[init]
+	defaultBranch = main
+[pull]
+	ff = only
+[fetch]
+	prune = true
+[alias]
+	up = "!git remote update -p; git merge --ff-only @{u}"

@@ -10,6 +10,8 @@ Personal shell/editor/git configuration managed in a small symlink-based repo.
 - `zsh/.config/zsh/zshrc_aliases`
 - `mise/.config/mise/config.toml`
 - `git/.gitconfig`
+- `tmux/.tmux.conf`
+- `vim/.vimrc`
 
 ## Install on a new machine
 
@@ -29,6 +31,10 @@ exec zsh
 
 `install.sh` auto-detects OS and runs package bootstrap before linking files.
 It also ensures `mise` is installed and runs `mise install` using your tracked config.
+
+Git includes useful defaults and aliases, including:
+
+- `git up` -> `git remote update -p; git merge --ff-only @{u}`
 
 Supported bootstrap scripts:
 

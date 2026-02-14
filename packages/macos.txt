@@ -2,6 +2,7 @@
 git
 zsh
 vim
+tmux
 ripgrep
 fd
 bat
