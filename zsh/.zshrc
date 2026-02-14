@@ -11,8 +11,8 @@ source ~/.antidote/antidote.zsh
 # initialize plugins statically with ${ZDOTDIR:-~}/.zsh_plugins.txt
 antidote load
 
-if command -v mise >/dev/null 2>&1; then
-  eval "$(mise activate zsh)"
+if [[ -x "$HOME/.local/bin/mise" ]]; then
+  eval "$(~/.local/bin/mise activate zsh)"
 fi
 source ~/.config/zsh/zshrc_aliases
 if command -v fzf >/dev/null 2>&1; then
