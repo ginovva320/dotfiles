@@ -9,3 +9,5 @@
 	prune = true
 [alias]
 	up = "!git remote update -p; git merge --ff-only @{u}"
+[url "git@github.com:"]
+	insteadOf = https://github.com/

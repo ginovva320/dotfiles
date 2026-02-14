@@ -192,5 +192,6 @@ link_file "$DOTFILES_DIR/mise/.config/mise/config.toml" "$HOME/.config/mise/conf
 link_file "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
 link_file "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
 link_file "$DOTFILES_DIR/vim/.vimrc" "$HOME/.vimrc"
+link_file "$DOTFILES_DIR/bin/update" "$HOME/.local/bin/update"
 
 echo "done"

@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+resolve_script_dir() {
+  local src="${BASH_SOURCE[0]}"
+  while [[ -L "$src" ]]; do
+    local dir
+    dir="$(cd -P "$(dirname "$src")" && pwd)"
+    src="$(readlink "$src")"
+    [[ "$src" != /* ]] && src="$dir/$src"
+  done
+  cd -P "$(dirname "$src")" && pwd
+}
+
+SCRIPT_DIR="$(resolve_script_dir)"
+DOTFILES_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+if git -C "$DOTFILES_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "Updating dotfiles repo"
+  git -C "$DOTFILES_DIR" pull --ff-only
+fi
+
+if command -v mise >/dev/null 2>&1; then
+  echo "Updating mise tools"
+  mise self-update || true
+  mise upgrade
+fi
+
+if command -v brew >/dev/null 2>&1; then
+  echo "Updating Homebrew packages"
+  brew update
+  brew upgrade
+  brew cleanup
+elif command -v apt-get >/dev/null 2>&1; then
+  echo "Updating apt packages"
+  sudo apt-get update
+  sudo apt-get upgrade -y
+elif command -v pacman >/dev/null 2>&1; then
+  echo "Updating pacman packages"
+  sudo pacman -Syu --noconfirm
+fi
+
+if [[ -d "$HOME/.antidote/.git" ]]; then
+  echo "Updating antidote"
+  git -C "$HOME/.antidote" pull --ff-only
+fi
+
+echo "update complete"

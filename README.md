@@ -12,6 +12,7 @@ Personal shell/editor/git configuration managed in a small symlink-based repo.
 - `git/.gitconfig`
 - `tmux/.tmux.conf`
 - `vim/.vimrc`
+- `bin/update`
 
 ## Install on a new machine
 
@@ -35,6 +36,7 @@ It also ensures `mise` is installed and runs `mise install` using your tracked c
 Git includes useful defaults and aliases, including:
 
 - `git up` -> `git remote update -p; git merge --ff-only @{u}`
+- `https://github.com/...` URLs automatically use SSH via `git@github.com:...`
 
 Supported bootstrap scripts:
 
@@ -54,6 +56,14 @@ Useful flags:
 ```bash
 ./install.sh --no-bootstrap
 ./install.sh --bootstrap-only
+```
+
+## Updating
+
+Run `update` to pull dotfiles and refresh tools/packages:
+
+```bash
+update
 ```
 
 ## Notes
