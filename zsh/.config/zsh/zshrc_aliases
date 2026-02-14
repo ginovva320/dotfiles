@@ -1,0 +1,4 @@
+alias reload="exec zsh"
+alias config="vim ~/.zshrc"
+alias plugins="vim ~/.zsh_plugins.txt"
+alias ll="ls -la"
