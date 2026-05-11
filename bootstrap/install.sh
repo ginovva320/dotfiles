@@ -5,6 +5,10 @@ REPO_URL="${DOTFILES_REPO_URL:-https://github.com/ginovva320/dotfiles.git}"
 BRANCH="${DOTFILES_BRANCH:-main}"
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
 
+git_bootstrap() {
+  GIT_CONFIG_GLOBAL=/dev/null git "$@"
+}
+
 detect_os() {
   case "$(uname -s)" in
     Darwin)
@@ -73,9 +77,10 @@ ensure_git() {
 
 checkout_dotfiles() {
   if [[ -d "$DOTFILES_DIR/.git" ]]; then
-    git -C "$DOTFILES_DIR" fetch origin "$BRANCH"
-    git -C "$DOTFILES_DIR" checkout "$BRANCH"
-    git -C "$DOTFILES_DIR" pull --ff-only origin "$BRANCH"
+    git_bootstrap -C "$DOTFILES_DIR" remote set-url origin "$REPO_URL"
+    git_bootstrap -C "$DOTFILES_DIR" fetch origin "$BRANCH"
+    git_bootstrap -C "$DOTFILES_DIR" checkout "$BRANCH"
+    git_bootstrap -C "$DOTFILES_DIR" pull --ff-only origin "$BRANCH"
     return
   fi
 
@@ -85,7 +90,7 @@ checkout_dotfiles() {
     exit 1
   fi
 
-  git clone --branch "$BRANCH" "$REPO_URL" "$DOTFILES_DIR"
+  git_bootstrap clone --branch "$BRANCH" "$REPO_URL" "$DOTFILES_DIR"
 }
 
 ensure_git
