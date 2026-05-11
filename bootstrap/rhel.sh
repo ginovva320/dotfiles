@@ -21,7 +21,6 @@ core_packages=(
   gcc-c++
   make
   util-linux-user
-  gnupg2
 )
 
 "${pkg_manager[@]}" "${core_packages[@]}"

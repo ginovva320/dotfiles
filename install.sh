@@ -84,7 +84,7 @@ ensure_mise() {
   fi
 
   case "$os" in
-    macos|debian|arch|linux)
+    macos|debian|arch|rhel|linux)
       curl https://mise.run | sh
       ;;
     *)
@@ -100,6 +100,20 @@ ensure_mise() {
     echo "mise install appears to have failed"
     exit 1
   fi
+}
+
+ensure_mise_prereqs() {
+  local os="$1"
+
+  case "$os" in
+    rhel)
+      if command -v dnf >/dev/null 2>&1 && rpm -q gnupg2-minimal >/dev/null 2>&1; then
+        sudo dnf swap -y gnupg2-minimal gnupg2-full
+      elif command -v yum >/dev/null 2>&1 && rpm -q gnupg2-minimal >/dev/null 2>&1; then
+        sudo yum swap -y gnupg2-minimal gnupg2-full
+      fi
+      ;;
+  esac
 }
 
 install_mise_tools() {
@@ -219,6 +233,7 @@ if [[ "$RUN_BOOTSTRAP" == true ]]; then
 fi
 
 if [[ "$INSTALL_MISE_TOOLS" == true ]]; then
+  ensure_mise_prereqs "$os"
   ensure_mise "$os"
   install_mise_tools
 else
