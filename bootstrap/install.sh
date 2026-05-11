@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_URL="${DOTFILES_REPO_URL:-https://github.com/ginovva320/dotfiles.git}"
+BRANCH="${DOTFILES_BRANCH:-main}"
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
+
+detect_os() {
+  case "$(uname -s)" in
+    Darwin)
+      echo "macos"
+      ;;
+    Linux)
+      if [[ -r /etc/os-release ]]; then
+        # shellcheck disable=SC1091
+        . /etc/os-release
+        case "${ID:-}" in
+          ubuntu|debian)
+            echo "debian"
+            return
+            ;;
+          arch)
+            echo "arch"
+            return
+            ;;
+        esac
+      fi
+      echo "linux"
+      ;;
+    *)
+      echo "unknown"
+      ;;
+  esac
+}
+
+ensure_git() {
+  if command -v git >/dev/null 2>&1; then
+    return
+  fi
+
+  case "$(detect_os)" in
+    debian)
+      sudo apt-get update
+      sudo apt-get install -y git
+      ;;
+    arch)
+      sudo pacman -Sy --noconfirm --needed git
+      ;;
+    macos)
+      echo "git is required. Install Xcode Command Line Tools or Homebrew git, then retry."
+      exit 1
+      ;;
+    *)
+      echo "git is required. Install git, then retry."
+      exit 1
+      ;;
+  esac
+}
+
+checkout_dotfiles() {
+  if [[ -d "$DOTFILES_DIR/.git" ]]; then
+    git -C "$DOTFILES_DIR" fetch origin "$BRANCH"
+    git -C "$DOTFILES_DIR" checkout "$BRANCH"
+    git -C "$DOTFILES_DIR" pull --ff-only origin "$BRANCH"
+    return
+  fi
+
+  if [[ -e "$DOTFILES_DIR" ]]; then
+    echo "$DOTFILES_DIR already exists but is not a git checkout."
+    echo "Move it aside or set DOTFILES_DIR to a different path, then retry."
+    exit 1
+  fi
+
+  git clone --branch "$BRANCH" "$REPO_URL" "$DOTFILES_DIR"
+}
+
+ensure_git
+checkout_dotfiles
+exec "$DOTFILES_DIR/install.sh" "$@"

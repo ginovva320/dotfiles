@@ -16,6 +16,20 @@ Personal shell/editor/git configuration managed in a small symlink-based repo.
 
 ## Install on a new machine
 
+With curl:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ginovva320/dotfiles/main/bootstrap/install.sh | bash
+```
+
+Pass installer flags after `bash -s --`:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ginovva320/dotfiles/main/bootstrap/install.sh | bash -s -- --no-bootstrap
+```
+
+Or clone manually:
+
 ```bash
 git clone <your-repo-url> ~/dotfiles
 cd ~/dotfiles
