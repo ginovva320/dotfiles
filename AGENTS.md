@@ -11,7 +11,7 @@ frameworks or tooling.
 - `install.sh` is the main installer.
 - `bootstrap/install.sh` is the curl-friendly entrypoint that clones or updates
   this repo and then delegates to `install.sh`.
-- `bootstrap/{macos,debian,arch}.sh` install OS packages.
+- `bootstrap/{macos,debian,arch,rhel}.sh` install OS packages.
 - `packages/*.txt` are package-manager input lists.
 - `zsh/`, `git/`, `tmux/`, `vim/`, `mise/`, and `bin/` contain files linked
   into `$HOME`.

@@ -64,6 +64,8 @@ Supported bootstrap scripts:
 - `bootstrap/macos.sh` (Homebrew)
 - `bootstrap/debian.sh` (`apt`)
 - `bootstrap/arch.sh` (`pacman`)
+- `bootstrap/rhel.sh` (`dnf`/`yum` for Amazon Linux, Fedora, RHEL, CentOS,
+  Rocky, and AlmaLinux)
 
 Package lists are in:
 

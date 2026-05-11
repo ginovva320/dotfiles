@@ -23,6 +23,10 @@ detect_os() {
             echo "arch"
             return
             ;;
+          amzn|fedora|rhel|centos|rocky|almalinux)
+            echo "rhel"
+            return
+            ;;
         esac
       fi
       echo "linux"
@@ -45,6 +49,16 @@ ensure_git() {
       ;;
     arch)
       sudo pacman -Sy --noconfirm --needed git
+      ;;
+    rhel)
+      if command -v dnf >/dev/null 2>&1; then
+        sudo dnf install -y git
+      elif command -v yum >/dev/null 2>&1; then
+        sudo yum install -y git
+      else
+        echo "dnf/yum not found; install git, then retry."
+        exit 1
+      fi
       ;;
     macos)
       echo "git is required. Install Xcode Command Line Tools or Homebrew git, then retry."

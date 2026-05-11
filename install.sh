@@ -38,6 +38,10 @@ detect_os() {
             echo "arch"
             return
             ;;
+          amzn|fedora|rhel|centos|rocky|almalinux)
+            echo "rhel"
+            return
+            ;;
         esac
       fi
       echo "linux"
@@ -56,6 +60,7 @@ run_bootstrap() {
     macos) script="$DOTFILES_DIR/bootstrap/macos.sh" ;;
     debian) script="$DOTFILES_DIR/bootstrap/debian.sh" ;;
     arch) script="$DOTFILES_DIR/bootstrap/arch.sh" ;;
+    rhel) script="$DOTFILES_DIR/bootstrap/rhel.sh" ;;
     *)
       echo "No bootstrap script for OS: $os"
       return
