@@ -20,6 +20,7 @@ core_packages=(
   gcc
   gcc-c++
   make
+  util-linux-user
 )
 
 "${pkg_manager[@]}" "${core_packages[@]}"
