@@ -22,16 +22,4 @@ core_packages=(
   make
 )
 
-optional_packages=(
-  ripgrep
-  fd-find
-  bat
-)
-
 "${pkg_manager[@]}" "${core_packages[@]}"
-
-for pkg in "${optional_packages[@]}"; do
-  if ! "${pkg_manager[@]}" "$pkg"; then
-    echo "optional package unavailable, skipping: $pkg"
-  fi
-done
