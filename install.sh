@@ -5,15 +5,18 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP_DIR="$HOME/.dotfiles_backup/$(date +%Y%m%d-%H%M%S)"
 RUN_BOOTSTRAP=true
 BOOTSTRAP_ONLY=false
+INSTALL_MISE_TOOLS=false
 
 usage() {
   cat <<USAGE
 Usage: ./install.sh [options]
 
 Options:
-  --no-bootstrap   Skip OS package bootstrap
-  --bootstrap-only Run bootstrap only (no symlinks)
-  -h, --help       Show help
+  --no-bootstrap     Skip OS package bootstrap
+  --bootstrap-only   Run bootstrap only (no symlinks)
+  --install-tools    Install mise and tools from mise/.config/mise/config.toml
+  --with-mise-tools  Alias for --install-tools
+  -h, --help         Show help
 USAGE
 }
 
@@ -187,6 +190,9 @@ while [[ $# -gt 0 ]]; do
     --bootstrap-only)
       BOOTSTRAP_ONLY=true
       ;;
+    --install-tools|--with-mise-tools)
+      INSTALL_MISE_TOOLS=true
+      ;;
     -h|--help)
       usage
       exit 0
@@ -205,8 +211,13 @@ echo "Detected OS: $os"
 
 if [[ "$RUN_BOOTSTRAP" == true ]]; then
   run_bootstrap "$os"
+fi
+
+if [[ "$INSTALL_MISE_TOOLS" == true ]]; then
   ensure_mise "$os"
   install_mise_tools
+else
+  echo "Skipping mise tool install; pass --install-tools to install configured runtimes/tools"
 fi
 
 ensure_antidote

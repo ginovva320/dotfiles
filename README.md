@@ -31,8 +31,14 @@ exec zsh
 ## Bootstrap behavior
 
 `install.sh` auto-detects OS and runs package bootstrap before linking files.
-It also ensures `mise` is installed and runs `mise install` using your tracked config.
 It attempts to set your login shell to `zsh` when available.
+
+Language runtimes and extra CLI tools managed by `mise` are opt-in. To install
+the tools from `mise/.config/mise/config.toml`, run:
+
+```bash
+./install.sh --install-tools
+```
 
 Git includes useful defaults and aliases, including:
 
@@ -57,6 +63,7 @@ Useful flags:
 ```bash
 ./install.sh --no-bootstrap
 ./install.sh --bootstrap-only
+./install.sh --install-tools
 ```
 
 ## Updating
