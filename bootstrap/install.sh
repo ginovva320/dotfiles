@@ -4,9 +4,17 @@ set -euo pipefail
 REPO_URL="${DOTFILES_REPO_URL:-https://github.com/ginovva320/dotfiles.git}"
 BRANCH="${DOTFILES_BRANCH:-main}"
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
+GIT_CONFIG_HOME="${TMPDIR:-/tmp}/dotfiles-bootstrap-git-config"
 
 git_bootstrap() {
-  GIT_CONFIG_GLOBAL=/dev/null git "$@"
+  mkdir -p "$GIT_CONFIG_HOME"
+  GIT_CONFIG_NOSYSTEM=1 \
+    GIT_CONFIG_SYSTEM=/dev/null \
+    GIT_CONFIG_GLOBAL=/dev/null \
+    XDG_CONFIG_HOME="$GIT_CONFIG_HOME" \
+    git -c url.git@github.com:.insteadOf= \
+      -c url.ssh://git@github.com/.insteadOf= \
+      "$@"
 }
 
 detect_os() {
@@ -78,9 +86,8 @@ ensure_git() {
 checkout_dotfiles() {
   if [[ -d "$DOTFILES_DIR/.git" ]]; then
     git_bootstrap -C "$DOTFILES_DIR" remote set-url origin "$REPO_URL"
-    git_bootstrap -C "$DOTFILES_DIR" fetch origin "$BRANCH"
-    git_bootstrap -C "$DOTFILES_DIR" checkout "$BRANCH"
-    git_bootstrap -C "$DOTFILES_DIR" pull --ff-only origin "$BRANCH"
+    git_bootstrap -C "$DOTFILES_DIR" fetch "$REPO_URL" "$BRANCH"
+    git_bootstrap -C "$DOTFILES_DIR" checkout -B "$BRANCH" FETCH_HEAD
     return
   fi
 
