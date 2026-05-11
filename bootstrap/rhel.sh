@@ -15,7 +15,6 @@ core_packages=(
   zsh
   vim
   tmux
-  curl
   wget
   unzip
   gcc
